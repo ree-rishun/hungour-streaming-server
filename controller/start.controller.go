@@ -4,17 +4,15 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
-	"strings"
+	"os"
 
 	"hungour-streaming-server/repositories"
 	"hungour-streaming-server/services"
 )
 
-func StartController(w http.ResponseWriter, r *http.Request) {
+func StartController() {
 	ctx := context.Background()
-	pathParts := strings.Split(r.URL.Path, "/")
-	conciergeId := pathParts[2]
+	conciergeId := os.Getenv("CONCIERGE_ID")
 
 	concierge, err := repositories.GetConciergeDocument(ctx, conciergeId)
 	if err != nil {

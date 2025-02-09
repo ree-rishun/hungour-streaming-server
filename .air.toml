@@ -1,7 +1,7 @@
 # air の設定ファイル
 
 # 監視するディレクトリ
-root = "."
+root = "/app"
 tmp_dir = "tmp"
 
 [build]

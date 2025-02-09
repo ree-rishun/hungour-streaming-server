@@ -12,8 +12,8 @@ import (
 func StartCall(conciergeId string, processId string, toTel string) {
 	// Twilio APIクライアントを作成
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
-		Username: os.Getenv("ACCOUNT_SID"),
-		Password: os.Getenv("AUTH_TOKEN"),
+		Username: os.Getenv("TWILIO_ACCOUNT_SID"),
+		Password: os.Getenv("TWILIO_AUTH_TOKEN"),
 	})
 
 	twiml := fmt.Sprintf(`
@@ -23,9 +23,11 @@ func StartCall(conciergeId string, processId string, toTel string) {
 		</Response>
 	`, buildWebhookUrl(conciergeId, processId))
 
+	log.Println(twiml)
+
 	params := &openapi.CreateCallParams{}
 	params.SetTo(toTel)
-	params.SetFrom(os.Getenv("TWILIO_TELL_FROM"))
+	params.SetFrom(os.Getenv("TWILIO_TEL_FROM"))
 	params.SetTwiml(twiml)
 	params.SetStatusCallback(fmt.Sprintf("%s/callback/%s/%s", os.Getenv("API_URL"), conciergeId, processId))
 	params.SetStatusCallbackEvent([]string{"completed"})
@@ -36,7 +38,7 @@ func StartCall(conciergeId string, processId string, toTel string) {
 		log.Fatalf("通話の作成に失敗しました: %s", err.Error())
 	}
 
-	fmt.Printf("通話を開始しました！Call SID: %s\n", *resp.Sid)
+	log.Printf("通話を開始しました！Call SID: %s\n", *resp.Sid)
 }
 
 func BuildReply(replyText string, conciergeId string, processId string) string {

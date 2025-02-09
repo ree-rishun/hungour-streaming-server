@@ -12,8 +12,8 @@ services:
     environment:
       - GO111MODULE=on
       - GOPROXY=https://proxy.golang.org,direct
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/gcloud-key.json
     env_file:
       - .env
-    command: ["go", "run", "main.go"]
     stdin_open: true
     tty: true

@@ -3,3 +3,6 @@
 
 # Editor / IDE
 .idea
+
+# keyfile
+gcloud-key.json

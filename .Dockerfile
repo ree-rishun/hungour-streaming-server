@@ -6,7 +6,7 @@ RUN go mod tidy
 RUN go build -o myapp
 
 # 実行用ステージ
-FROM gcr.io/distroless/base-debian11
+FROM golang:1.23
 WORKDIR /root/
 COPY --from=builder /app/myapp .
 CMD ["./myapp"]

@@ -17,7 +17,7 @@ func GetUserDocument(ctx context.Context, id string) (models.User, error) {
 	}
 	defer client.Close()
 
-	doc, err := client.Collection("user").Doc(id).Get(ctx)
+	doc, err := client.Collection("users").Doc(id).Get(ctx)
 
 	if err != nil {
 		return user, err
