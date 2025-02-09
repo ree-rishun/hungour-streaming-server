@@ -12,6 +12,7 @@ import (
 )
 
 func CallbackController(w http.ResponseWriter, r *http.Request) {
+
 	ctx := context.Background()
 	pathParts := strings.Split(r.URL.Path, "/")
 	conciergeId := pathParts[2]
@@ -68,7 +69,7 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		user.ReserveName,
 		user.Tel,
 	)
-	services.StartCall(conciergeId, processId, "+819092244036")
+	services.StartCall(conciergeId, processId, "+819092244036", concierge.ReserveList[cursor].Name)
 	repositories.UpdateConciergeDocument(ctx, conciergeId, concierge.Status, cursor)
 }
 

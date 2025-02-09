@@ -9,7 +9,7 @@ import (
 	openapi "github.com/twilio/twilio-go/rest/api/v2010"
 )
 
-func StartCall(conciergeId string, processId string, toTel string) {
+func StartCall(conciergeId string, processId string, toTel string, shopName string) {
 	// Twilio APIクライアントを作成
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: os.Getenv("TWILIO_ACCOUNT_SID"),
@@ -18,10 +18,10 @@ func StartCall(conciergeId string, processId string, toTel string) {
 
 	twiml := fmt.Sprintf(`
 		<Response>
-			<Say language="ja-JP">もしもし</Say>
+			<Say language="ja-JP">%s</Say>
 			<Gather input="speech" language="ja-JP" action="%s" speechTimeout="auto" />
 		</Response>
-	`, buildWebhookUrl(conciergeId, processId))
+	`, fmt.Sprintf("もしもし、私は予約電話を代行するAIです。こちらは、%s さんでお間違いないですか？", shopName), buildWebhookUrl(conciergeId, processId))
 
 	log.Println(twiml)
 

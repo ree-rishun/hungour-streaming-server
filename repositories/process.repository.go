@@ -108,7 +108,7 @@ func buildFirstData(
 	timestamp := time.Now()
 	jst, _ := time.LoadLocation("Asia/Tokyo")
 	now := time.Now().In(jst)
-	reserveTime := now.Add((departureTime + 3) * time.Minute)
+	reserveTime := now.Add(time.Duration(departureTime + 3) * time.Minute)
 	return models.Process{
 		ConciergeId: conciergeId,
 		Status: "created",
@@ -117,25 +117,34 @@ func buildFirstData(
 				Role: "user",
 				Text: fmt.Sprintf(`
 あなたは日本語で話すAIアシスタントです。
-これから、飲食店への電話予約を行います。
+これから、飲食店への電話予約を行っていただきます。
 次のルールに従って、できるだけ自然にスムーズに予約を行ってください。
 【基本ルール】
 1. **自然な日本語**で話す。（できるだけ人間らしい口調を意識する）
 2. **予約に必要な情報**を伝え、足りない情報は質問する。
-3. **相手が理解しやすい話し方**を心がける。（短めの文）
-4. **情報の確認**を忘れずに。（日付、時間、人数、名前、電話番号など）
-5. もし予約ができなかった場合は場合は「承知しました。お忙しいところご対応いただき、ありがとうございました。」。
-6. **最終的に予約が取れたかを確認し、礼儀正しく会話を終える**。
-7. **店員の指示に従いながら柔軟に対応する**。
-8. 予約の連絡を終えたタイミングで挨拶の代わりに finished と答える。
+3. **相手が理解しやすい話し方**を心がけて短めの文で対話する。
+4. **店員の指示に従いながら柔軟に対応する**。
+5. 予約の連絡を終えたタイミングで挨拶の代わりに finished と答えると電話が切れるようになっています。
+【予約の流れ】
+1. 電話先がお店か不明のためお店か確認する。
+2. 電話先が合っていた場合、本日の%sに%d名で伺いたいが席が空いているか確認する。
+3. 空いていた場合、予約名は%sで電話番号が必要な場合は%sを伝える。
+4. もしお店が違ったり、予約できなかった場合、予約できた場合は finished とのみ答える。
 【予約のための基本情報】
 - 店名: %s
 - 希望時間: %s
 - 人数: %d名
 - 名前: %s
-- 電話番号: %s`,
+- 電話番号: %s
+
+それでは、実際に電話回線にあなたの会話を繋げます。
+次以降の会話の相手はすべて実際のお店の店員さんが電話越しに話した言葉を文字に起こしたものです。`,
+					reserveTime.Format("15:04"),
+					partySize,
+					userName,
+					userTel,
 					shopName,
-					now.Format("15:04"),
+					reserveTime.Format("15:04"),
 					partySize,
 					userName,
 					userTel,
@@ -143,7 +152,7 @@ func buildFirstData(
 			},
 			models.Message{
 				Role: "model",
-				Text: "承知しました。",
+				Text: fmt.Sprintf("もしもし、私は予約電話を代行するAIです。こちらは、%s さんでお間違いないですか？", shopName),
 			},
 		},
 		CreatedAt: timestamp,

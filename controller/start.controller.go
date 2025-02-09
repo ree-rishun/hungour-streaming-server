@@ -38,5 +38,5 @@ func StartController() {
 		user.Tel,
 	)
 	// 予約の電話を開始
-	services.StartCall(conciergeId, processId, "+819092244036")
+	services.StartCall(conciergeId, processId, "+819092244036", concierge.ReserveList[cursor].Name)
 }
