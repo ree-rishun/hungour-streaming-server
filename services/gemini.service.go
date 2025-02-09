@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"regexp"
 	"strings"
@@ -85,17 +86,20 @@ func IsReserved(ctx context.Context, messages []models.Message) (bool, error) {
 	cs.History = history
 
 	resp, err := cs.SendMessage(ctx, genai.Text(`
-これまでの会話から今回電話したお店に対して予約は完了しましたか？
+これまでの会話から今回電話したお店に対して予約は完了していますか？
 - 予約ができた場合はtrue
 - 予約ができなかった場合はfalse
-それ以外の文字は絶対に回答しないでください。
+で回答してください。
+それ以外の文字列での回答、大文字を混ぜてなどの回答はやめてください。
 `))
 	if err != nil {
 		return false, err
 	}
 	res := GeneratePlainTextResponse(resp.Candidates)
 
-	return res == "true", nil
+	log.Plintln(res)
+
+	return strings.Contains(res, "true"), nil
 }
 
 func GeneratePlainTextResponse(cs []*genai.Candidate) string {

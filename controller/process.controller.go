@@ -55,7 +55,7 @@ func ProcessController(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	// 通話終了の場合
-	if replyText == "finished" {
+	if strings.Contains(replyText, "finished") {
 		_, _ = w.Write([]byte(services.BuildFarewell()))
 		return
 	}
