@@ -10,7 +10,7 @@ import (
 )
 
 func BuildApp(ctx context.Context) (*firestore.Client, error) {
-	sa := option.WithCredentialsFile("hunger-gourmet-0885b2569b5e.json")
+	sa := option.WithoutAuthentication()
 	conf := &firebase.Config{ProjectID: os.Getenv("PROJECT_ID")}
 	app, err := firebase.NewApp(ctx, conf, sa)
 	if err != nil {
