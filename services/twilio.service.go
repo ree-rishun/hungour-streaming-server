@@ -21,7 +21,7 @@ func StartCall(conciergeId string, processId string, toTel string, shopName stri
 			<Say language="ja-JP">%s</Say>
 			<Gather input="speech" language="ja-JP" action="%s" speechTimeout="auto" />
 		</Response>
-	`, fmt.Sprintf("もしもし、私は予約電話を代行するAIです。こちらは、%s さんでお間違いないですか？", shopName), buildWebhookUrl(conciergeId, processId))
+	`, fmt.Sprintf("もしもし、私は予約電話を代行するエーアイです。こちらは、%s さんでお間違いないですか？", shopName), buildWebhookUrl(conciergeId, processId))
 
 	log.Println(twiml)
 
