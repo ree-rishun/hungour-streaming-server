@@ -13,7 +13,7 @@ import (
 )
 
 func GeminiRequest(ctx context.Context, message string, messages []models.Message) (string, error) {
-	client, err := genai.NewClient(ctx, option.WithAPIKey("AIzaSyB8UKIKK0PpAVvRto3P9yiXwe4CgNOx7Pg"))
+	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
 	if err != nil {
 		return "", err
 	}
@@ -53,7 +53,7 @@ func GeminiRequest(ctx context.Context, message string, messages []models.Messag
 }
 
 func IsReserved(ctx context.Context, messages []models.Message) (bool, error) {
-	client, err := genai.NewClient(ctx, option.WithAPIKey("AIzaSyB8UKIKK0PpAVvRto3P9yiXwe4CgNOx7Pg"))
+	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))
 	if err != nil {
 		return false, err
 	}
