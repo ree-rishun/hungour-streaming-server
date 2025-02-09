@@ -106,6 +106,9 @@ func buildFirstData(
 	userTel string,
 ) models.Process {
 	timestamp := time.Now()
+	jst, _ := time.LoadLocation("Asia/Tokyo")
+	now := time.Now().In(jst)
+	reserveTime := now.Add((departureTime + 3) * time.Minute)
 	return models.Process{
 		ConciergeId: conciergeId,
 		Status: "created",
@@ -127,14 +130,14 @@ func buildFirstData(
 8. 予約の連絡を終えたタイミングで挨拶の代わりに finished と答える。
 【予約のための基本情報】
 - 店名: %s
-- 希望時間: %d分後
+- 希望時間: %s
 - 人数: %d名
 - 名前: %s
 - 電話番号: %s`,
 					shopName,
-					departureTime,
-					userName,
+					now.Format("15:04"),
 					partySize,
+					userName,
 					userTel,
 				),
 			},
