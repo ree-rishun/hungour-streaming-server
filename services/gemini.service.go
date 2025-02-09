@@ -97,7 +97,7 @@ func IsReserved(ctx context.Context, messages []models.Message) (bool, error) {
 	}
 	res := GeneratePlainTextResponse(resp.Candidates)
 
-	log.Plintln(res)
+	log.Println(res)
 
 	return strings.Contains(res, "true"), nil
 }
