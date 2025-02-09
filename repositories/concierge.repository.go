@@ -48,6 +48,7 @@ func GetConciergeDocument(ctx context.Context, id string) (models.Concierge, err
 	res = models.Concierge{
 		ReserveList: reserveList,
 		UserId: data["user_id"].(string),
+		PartySize: data["party_size"].(int64),
 		Status: data["status"].(string),
 		Cursor:	data["cursor"].(int64),
 		CreatedAt: data["created_at"].(time.Time),
