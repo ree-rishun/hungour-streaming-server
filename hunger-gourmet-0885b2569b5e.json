@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hunger-gourmet",
+  "private_key_id": "0885b2569b5e393985671e23caee65e375efe5dd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCcPsQcFORJttVk\nHEruqRCYbGbUhXGuM4kL3ikOW/FDCFvhEY1Ohs8Gg3Tm4sZcwO+vYq72P9bAIsHx\nxQiH+xLE9/gqHhxMtbJdMD6xGfxYx+VDntqmQW0Db/re50HKZ5RKN1ETatBXLFNO\n3a2sx9lpEPPo+s/bsSwF8Td70tCONRxQg3sc8YVbsDZgQap1e4EP11NZq9MoZWzU\n0pgM1+z3CT67H49O2db0TsONruVU7Tuhs0TAvqbuWaptM/b6YikOFN7SuQMxH3lO\n4CoDI/kDg1Vvoxjh/387Fn8+cSROAkRVkmnszmQxLep8o0xfaq2MobU3/rjwiQqt\nSe3w1kNXAgMBAAECggEAAk/PblbvdcPAboXDT2VYUIOyFczk/LMt1kDIPLp8MbC1\no06I17OY6+YVXGEt7Ctn9cwGU1sTHgP6+KJ2A4UMfGDq3rypUIfpBrCdt4MZ6mUI\nGF2zqygRU9lb+Iuqu92XzRf6bsjIIly5MtPcK6VIAIz2qZN5xddePmGY9OUOnuar\nrgApWiDFVmyKb5/8GQWsMl67MybO7nGohvUTXeORzUrTAO9vXn/Hb2khy7Y++TEW\ngnVpGDhUMR8Vn4xj0FEDbjQK4OcKPLhpy2oqItFkVPkyyZnXQWknH5KGLsfTjoDZ\neQsoR+Qm64JyyEoTy/Z8rmA5BB+A7Jk7nVDMfxUPQQKBgQDP/SXV593jxWW5QNdj\njYoBuyapp3VNbCBGcZl3XuLAgHunvbt9LHm7AyBw9rqKRfKLFTjABv/fBXALZbL3\ngxfVH2wdzkH8VPwoERTyRsXus0w8lQIkb9+zZe9nxou77HLNsekeHvDAR+ICeUa5\nemL+m16kYzCKyMEigveY243DdwKBgQDAT+M6eLflvN5IRv5IZnbDhYz1ld+60o4c\nofxof8Xo6djuFogo2zrmvQWF2TWmGOhJtIp6FjZbG4d6QMpL7g07lhdwmPJ1MM0G\n1iMpv3vr8aX0pl1+obbBhVbak/dygJsskbfoLBcn6rIAG2xkPhoU+UusrkyKLeZM\nsha3U1q3IQKBgHeLJMgBcQONXZ5QqnvJylycWOiCG2XYk+RpPq/hlarXLjuHTc/w\nVDcs4OSMq0L2WSWfmPKmE0L4OSIT3f1tF7GjUdz/w+VoY1YUG1n1W6aK33KiooyW\n0JioKiYXdBEbIhEgBMEPP4kEx95sHj5VHbkBTDBn4mqiYH+Zjv4Ikz6ZAoGAT1Hk\nAB8AgrJ24Erf4M7aV2TDMhwiDnWABhFOAXAKGjoxrmn+uRNLZRY7q+xeM2b8kEH2\nB8sXmlZtd6A3kD/cl2IdwuRixLFfL12tXS/MlhGyiIkB8RQURBeSLk9vdXvUBPsJ\nZqqg1mb4ChFFkMcIjPQSIWQ2z5uE7MdblTu9I+ECgYAGr3EKhIV4WCcM6+BNl5qf\nFzk66HmSMWVzfUz5E3MGOBG8U/pdZWknipRJR2p9ww2Dy+F2jogB6Wqp6AGP2lxk\npG1hXrUOTp8H/TZgmepkLS9QXuxY+jUnSK97is3qXZKW505uI/qKFFVCEybteTZA\nafVdw1jR49vOA908BjBM9g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@hunger-gourmet.iam.gserviceaccount.com",
+  "client_id": "106111908207674328191",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40hunger-gourmet.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

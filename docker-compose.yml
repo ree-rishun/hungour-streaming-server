@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    image: golang:1.23
+    container_name: go_dev
+    working_dir: /app
+    volumes:
+      - .:/app  # カレントディレクトリをコンテナ内の /app にマウント
+    ports:
+      - "8080:8080"  # API サーバー用のポート（必要なら変更）
+    environment:
+      - GO111MODULE=on
+      - GOPROXY=https://proxy.golang.org,direct
+    env_file:
+      - .env
+    command: ["go", "run", "main.go"]
+    stdin_open: true
+    tty: true
