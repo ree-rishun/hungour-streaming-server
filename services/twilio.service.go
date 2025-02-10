@@ -29,8 +29,8 @@ func StartCall(conciergeId string, processId string, toTel string, shopName stri
 	log.Println(twiml)
 
 	params := &openapi.CreateCallParams{}
-	params.SetTo(toTel)
-	params.SetFrom(os.Getenv("TWILIO_TEL_FROM"))
+	params.SetTo(toInternationalFormat(toTel))
+	params.SetFrom(toInternationalFormat(os.Getenv("TWILIO_TEL_FROM")))
 	params.SetTwiml(twiml)
 	params.SetStatusCallback(fmt.Sprintf("%s/callback/%s/%s?pod=%s", os.Getenv("API_URL"), conciergeId, processId, podName))
 	params.SetStatusCallbackEvent([]string{"completed"})
@@ -67,4 +67,12 @@ func buildWebhookUrl(conciergeId string, processId string) string {
 	podName, _ := os.Hostname()
 
 	return fmt.Sprintf("%s/process/%s/%s?pod=%s", os.Getenv("API_URL"), conciergeId, processId, podName)
+}
+
+func toInternationalFormat(phone string) string {
+	phone = strings.TrimSpace(phone)
+	if strings.HasPrefix(phone, "0") {
+		return fmt.Sprintf("+81%s", phone[1:]) // 先頭の0を+81に置き換え
+	}
+	return phone // すでに国際形式ならそのまま返す
 }
