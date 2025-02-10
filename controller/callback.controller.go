@@ -103,4 +103,3 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 	services.StartCall(conciergeId, processId, toTel, concierge.ReserveList[concierge.Cursor].Name)
 	repositories.UpdateConciergeDocument(ctx, conciergeId, concierge.Status, concierge.Cursor, process.ReservedTime)
 }
-

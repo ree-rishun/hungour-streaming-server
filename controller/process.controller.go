@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
+	"unicode"
 
 	"hungour-streaming-server/models"
 	"hungour-streaming-server/repositories"
@@ -63,7 +65,7 @@ func ProcessController(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	// 通話終了の場合
-	if strings.Contains(replyText, "finished") {
+	if strings.Contains(removeFinishedIfFullWidth(replyText), "finished") {
 		_, _ = w.Write([]byte(services.BuildFarewell()))
 		return
 	}
@@ -73,3 +75,22 @@ func ProcessController(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte(services.BuildReply(replyText, conciergeId, processId)))
 }
 
+// 全角文字が含まれているか判定
+func containsFullWidth(s string) bool {
+	for _, r := range s {
+		if unicode.Is(unicode.Han, r) || unicode.Is(unicode.Hiragana, r) || unicode.Is(unicode.Katakana, r) || (r > 0xFF00 && r < 0xFFEF) {
+			return true
+		}
+	}
+	return false
+}
+
+// 条件に応じて `finished` を削除する
+func removeFinishedIfFullWidth(s string) string {
+	if strings.Contains(s, "finished") && containsFullWidth(s) {
+		// "finished" を削除
+		re := regexp.MustCompile(`finished`)
+		return re.ReplaceAllString(s, "")
+	}
+	return s
+}
