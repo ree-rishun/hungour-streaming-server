@@ -56,7 +56,8 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		services.SendLineMessage(
 			user.LineId,
 			"",
-			fmt.Sprintf("予約が完了しました！", "「%s」を%sに予約しました。詳細は投稿をご覧ください。", concierge.ReserveList[cursor].Name, process.ReservedTime.Format("15:04")),
+			"予約が完了しました",
+			fmt.Sprintf("「%s」を%sに予約しました。詳細は投稿をご覧ください。", concierge.ReserveList[cursor].Name, process.ReservedTime.Format("15:04")),
 			conciergeId,
 		)
 
