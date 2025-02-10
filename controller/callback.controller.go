@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"hungour-streaming-server/repositories"
 	"hungour-streaming-server/services"
@@ -53,11 +54,12 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		repositories.UpdateConciergeDocument(ctx, conciergeId, "reserved", concierge.Cursor, process.ReservedTime)
 
 		// LINE送信処理
+		jst, _ := time.LoadLocation("Asia/Tokyo")
 		services.SendLineMessage(
 			user.LineId,
 			"",
 			"予約が完了しました",
-			fmt.Sprintf("「%s」を%sに予約しました。詳細は投稿をご覧ください。", concierge.ReserveList[concierge.Cursor].Name, process.ReservedTime.Format("15:04")),
+			fmt.Sprintf("「%s」を%sに予約しました。詳細は投稿をご覧ください。", concierge.ReserveList[concierge.Cursor].Name, process.ReservedTime.In(jst).Format("15:04")),
 			conciergeId,
 		)
 
