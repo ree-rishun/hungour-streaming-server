@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"regexp"
 	"strings"
@@ -96,8 +95,6 @@ func IsReserved(ctx context.Context, messages []models.Message) (bool, error) {
 		return false, err
 	}
 	res := GeneratePlainTextResponse(resp.Candidates)
-
-	log.Println(res)
 
 	return strings.Contains(res, "true"), nil
 }

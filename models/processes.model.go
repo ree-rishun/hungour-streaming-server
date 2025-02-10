@@ -13,6 +13,7 @@ type Process struct {
 	Messages		[]Message	`firestore:"messages"`
 	ConciergeId		string		`firestore:"concierge_id"`
 	Status			string		`firestore:"status"`
+	ReservedTime	time.Time	`firestore:"reserved_time"`
 	CreatedAt		time.Time	`firestore:"created_at"`
 	UpdatedAt		time.Time	`firestore:"updated_at"`
 }

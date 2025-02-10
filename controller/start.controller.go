@@ -24,6 +24,9 @@ func StartController() {
 	}
 	cursor := concierge.Cursor
 
+	// TODO: 承認済みユーザのみ店舗に電話できるように変更
+	toTel := user.Tel
+
 	// プロセスを作成
 	processId := fmt.Sprintf("%s-%s", conciergeId,concierge.ReserveList[cursor].Id)
 	repositories.CreateNewProcess(
@@ -38,5 +41,5 @@ func StartController() {
 		user.Tel,
 	)
 	// 予約の電話を開始
-	services.StartCall(conciergeId, processId, "+819092244036", concierge.ReserveList[cursor].Name)
+	services.StartCall(conciergeId, processId, toTel, concierge.ReserveList[cursor].Name)
 }

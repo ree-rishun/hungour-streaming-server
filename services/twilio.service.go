@@ -10,6 +10,9 @@ import (
 )
 
 func StartCall(conciergeId string, processId string, toTel string, shopName string) {
+	// Pod名の取得
+	podName, _ := os.Hostname()
+
 	// Twilio APIクライアントを作成
 	client := twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: os.Getenv("TWILIO_ACCOUNT_SID"),
@@ -29,7 +32,7 @@ func StartCall(conciergeId string, processId string, toTel string, shopName stri
 	params.SetTo(toTel)
 	params.SetFrom(os.Getenv("TWILIO_TEL_FROM"))
 	params.SetTwiml(twiml)
-	params.SetStatusCallback(fmt.Sprintf("%s/callback/%s/%s", os.Getenv("API_URL"), conciergeId, processId))
+	params.SetStatusCallback(fmt.Sprintf("%s/callback/%s/%s?pod=%s", os.Getenv("API_URL"), conciergeId, processId, podName))
 	params.SetStatusCallbackEvent([]string{"completed"})
 
 	// 発信
@@ -60,5 +63,8 @@ func BuildFarewell() string {
 }
 
 func buildWebhookUrl(conciergeId string, processId string) string {
-	return fmt.Sprintf("%s/process/%s/%s", os.Getenv("API_URL"), conciergeId, processId)
+	// Pod名の取得
+	podName, _ := os.Hostname()
+
+	return fmt.Sprintf("%s/process/%s/%s?pod=%s", os.Getenv("API_URL"), conciergeId, processId, podName)
 }

@@ -58,7 +58,7 @@ func GetConciergeDocument(ctx context.Context, id string) (models.Concierge, err
 }
 
 // 更新
-func UpdateConciergeDocument(ctx context.Context, id string, status string, cursor int64) error {
+func UpdateConciergeDocument(ctx context.Context, id string, status string, cursor int64, reservedTime time.Time) error {
 	client, err := services.BuildApp(ctx)
 	if err != nil {
 		return err
@@ -76,6 +76,10 @@ func UpdateConciergeDocument(ctx context.Context, id string, status string, curs
 		firestore.Update{
 			Path: "cursor",
 			Value: cursor,
+		},
+		firestore.Update{
+			Path: "reserved_time",
+			Value: reservedTime,
 		},
 		firestore.Update{
 			Path: "updated_at",

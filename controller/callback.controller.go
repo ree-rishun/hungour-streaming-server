@@ -27,10 +27,11 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 会話履歴から予約完了したか確認
-	messages, err := repositories.GetProcessDocument(ctx, processId)
+	process, err := repositories.GetProcessDocument(ctx, processId)
 	if err != nil {
 		log.Fatalf("Gemini Error: %s", err.Error())
 	}
+	messages := process.Messages
 	isReserved, err := services.IsReserved(ctx, messages)
 	if err != nil {
 		log.Fatalf("Gemini Error: %s", err.Error())
@@ -41,12 +42,24 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Gemini Error: %s", err.Error())
 	}
 
-	// 終了
+	// 予約完了
 	if isReserved {
 		// 予約完了ステータスに
-		repositories.UpdateConciergeDocument(ctx, conciergeId, "reserved", concierge.Cursor)
+		repositories.UpdateConciergeDocument(ctx, conciergeId, "reserved", concierge.Cursor, process.ReservedTime)
 
-		// TODO: Podの削除処理
+		// Podの削除処理
+		services.DeletePod()
+
+		return
+	}
+
+	// 全ての店が予約できなかった
+	if concierge.Cursor >= 2 {
+		// 予約完了ステータスに
+		repositories.UpdateConciergeDocument(ctx, conciergeId, "failed", concierge.Cursor, process.ReservedTime)
+
+		// Podの削除処理
+		services.DeletePod()
 
 		return
 	}
@@ -57,6 +70,9 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Gemini Error: %s", err.Error())
 	}
 	cursor := concierge.Cursor + 1
+
+	// TODO: 承認済みユーザのみ店舗に電話できるように変更
+	toTel := user.Tel
 
 	repositories.CreateNewProcess(
 		ctx,
@@ -69,7 +85,7 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		user.ReserveName,
 		user.Tel,
 	)
-	services.StartCall(conciergeId, processId, "+819092244036", concierge.ReserveList[cursor].Name)
-	repositories.UpdateConciergeDocument(ctx, conciergeId, concierge.Status, cursor)
+	services.StartCall(conciergeId, processId, toTel, concierge.ReserveList[cursor].Name)
+	repositories.UpdateConciergeDocument(ctx, conciergeId, concierge.Status, cursor, process.ReservedTime)
 }
 

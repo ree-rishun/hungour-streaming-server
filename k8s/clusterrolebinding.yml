@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pod-self-delete-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pod-self-delete
+subjects:
+  - kind: ServiceAccount
+    name: default  # ✅ Pod の ServiceAccount を指定
+    namespace: default

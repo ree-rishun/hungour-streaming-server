@@ -12,17 +12,18 @@ import (
 )
 
 // プロセスの取得
-func GetProcessDocument(ctx context.Context, id string) ([]models.Message, error) {
+func GetProcessDocument(ctx context.Context, id string) (models.Process, error) {
+	var process models.Process
 	client, err := services.BuildApp(ctx)
 	if err != nil {
-		return nil, err
+		return process, err
 	}
 	defer client.Close()
 
 	doc, err := client.Collection("processes").Doc(id).Get(ctx)
 
 	if err != nil {
-		return nil, err
+		return process, err
 	}
 
 	var messages []models.Message
@@ -43,7 +44,12 @@ func GetProcessDocument(ctx context.Context, id string) ([]models.Message, error
 		)
 	}
 
-	return messages, nil
+	process = models.Process{
+		Messages: messages,
+		ReservedTime: data["reserved_time"].(time.Time),
+	}
+
+	return process, nil
 }
 
 // プロセスの新規作成
@@ -108,7 +114,7 @@ func buildFirstData(
 	timestamp := time.Now()
 	jst, _ := time.LoadLocation("Asia/Tokyo")
 	now := time.Now().In(jst)
-	reserveTime := now.Add(time.Duration(departureTime + 3) * time.Minute)
+	reserveTime := now.Add(time.Duration(departureTime + 5) * time.Minute)
 	return models.Process{
 		ConciergeId: conciergeId,
 		Status: "created",
@@ -156,6 +162,7 @@ func buildFirstData(
 				Text: fmt.Sprintf("もしもし、私は予約電話を代行するAIです。こちらは、%s さんでお間違いないですか？", shopName),
 			},
 		},
+		ReservedTime: reserveTime,
 		CreatedAt: timestamp,
 		UpdatedAt: timestamp,
 	}
