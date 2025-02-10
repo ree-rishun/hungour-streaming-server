@@ -42,10 +42,23 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Gemini Error: %s", err.Error())
 	}
 
+	user, err := repositories.GetUserDocument(ctx, concierge.UserId)
+	if err != nil {
+		log.Fatalf("Gemini Error: %s", err.Error())
+	}
+
 	// 予約完了
 	if isReserved {
 		// 予約完了ステータスに
 		repositories.UpdateConciergeDocument(ctx, conciergeId, "reserved", concierge.Cursor, process.ReservedTime)
+
+		// LINE送信処理
+		services.SendLineMessage(
+			user.LineId,
+			"",
+			fmt.Sprintf("予約が完了しました！", "「%s」を%sに予約しました。詳細は投稿をご覧ください。", concierge.ReserveList[cursor].Name, process.ReservedTime.Format("15:04")),
+			conciergeId,
+		)
 
 		// Podの削除処理
 		services.DeletePod()
@@ -58,6 +71,9 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 		// 予約完了ステータスに
 		repositories.UpdateConciergeDocument(ctx, conciergeId, "failed", concierge.Cursor, process.ReservedTime)
 
+		// LINE送信処理
+		services.SendLineMessage(user.LineId, "", "予約できませんでした", "申し訳ございませんがお店に問い合わせたところ予約できませんでした。", conciergeId)
+
 		// Podの削除処理
 		services.DeletePod()
 
@@ -65,10 +81,6 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 次の予約を開始
-	user, err := repositories.GetUserDocument(ctx, concierge.UserId)
-	if err != nil {
-		log.Fatalf("Gemini Error: %s", err.Error())
-	}
 	cursor := concierge.Cursor + 1
 
 	// TODO: 承認済みユーザのみ店舗に電話できるように変更

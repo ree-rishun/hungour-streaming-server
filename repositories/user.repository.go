@@ -27,6 +27,7 @@ func GetUserDocument(ctx context.Context, id string) (models.User, error) {
 	user = models.User{
 		ReserveName: data["reserve_name"].(string),
 		Tel: data["tel"].(string),
+		LineId: data["line_id"].(string),
 	}
 
 	return user, nil
