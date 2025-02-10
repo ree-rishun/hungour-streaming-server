@@ -57,7 +57,7 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 			user.LineId,
 			"",
 			"予約が完了しました",
-			fmt.Sprintf("「%s」を%sに予約しました。詳細は投稿をご覧ください。", concierge.ReserveList[cursor].Name, process.ReservedTime.Format("15:04")),
+			fmt.Sprintf("「%s」を%sに予約しました。詳細は投稿をご覧ください。", concierge.ReserveList[concierge.Cursor].Name, process.ReservedTime.Format("15:04")),
 			conciergeId,
 		)
 
@@ -82,23 +82,23 @@ func CallbackController(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 次の予約を開始
-	cursor := concierge.Cursor + 1
+	concierge.Cursor++
 
 	// TODO: 承認済みユーザのみ店舗に電話できるように変更
 	toTel := user.Tel
 
 	repositories.CreateNewProcess(
 		ctx,
-		concierge.ReserveList[cursor].Id,
+		concierge.ReserveList[concierge.Cursor].Id,
 		conciergeId,
-		concierge.ReserveList[cursor].Name,
+		concierge.ReserveList[concierge.Cursor].Name,
 		concierge.DepartureTime,
 		concierge.PartySize,
 		concierge.SeatType,
 		user.ReserveName,
 		user.Tel,
 	)
-	services.StartCall(conciergeId, processId, toTel, concierge.ReserveList[cursor].Name)
-	repositories.UpdateConciergeDocument(ctx, conciergeId, concierge.Status, cursor, process.ReservedTime)
+	services.StartCall(conciergeId, processId, toTel, concierge.ReserveList[concierge.Cursor].Name)
+	repositories.UpdateConciergeDocument(ctx, conciergeId, concierge.Status, concierge.Cursor, process.ReservedTime)
 }
 
