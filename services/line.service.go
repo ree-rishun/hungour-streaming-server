@@ -18,7 +18,7 @@ func SendLineMessage(toId string, imageUrl string, title string, message string,
 		return err
 	}
 
-	pageUrl := fmt.Sprintf("%s/reserves/%s/status", CLIENT_BASE_URL, conciergeId)
+	pageUrl := fmt.Sprintf("%s/reserves/%s/status", os.Getenv("CLIENT_BASE_URL"), conciergeId)
 
 	_, err = bot.PushMessage(toId, linebot.NewTemplateMessage(
 		title,

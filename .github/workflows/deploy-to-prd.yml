@@ -1,0 +1,35 @@
+name: Deploy Docker Image to Artifact Registry
+
+on:
+  push:
+    branches:
+      - main  # mainブランチにpushされたら実行
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Configure Docker to use Google Artifact Registry
+        run: |
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+      - name: Build Docker image
+        run: |
+          docker build -t app -f .Dockerfile .
+
+      - name: Tag Docker image
+        run: |
+          docker tag app ${{ vars.GCP_REPOSITORY }}/app:latest
+
+      - name: Push Docker image to Artifact Registry
+        run: |
+          docker push ${{ vars.GCP_REPOSITORY }}/app:latest
